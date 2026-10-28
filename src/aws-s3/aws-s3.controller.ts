@@ -6,7 +6,6 @@ import {
   HttpStatus,
   ParseFilePipeBuilder,
   Post,
-  StreamableFile,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -22,43 +21,6 @@ export class AwsS3Controller {
     return this.awsS3Service.getIdentity();
   }
 
-  @Get('demo-object')
-  getDemoObjectMetadata() {
-    return this.awsS3Service.getDemoObjectMetadata();
-  }
-
-  @Get('demo-objects')
-  listDemoObjects() {
-    return this.awsS3Service.listDemoObjects();
-  }
-  @Get('restricted-objects')
-  testRestrictedPrefix() {
-    return this.awsS3Service.testRestrictedPrefix();
-  }
-  @Get('demo-object-content')
-  getDemoObjectContent() {
-    return this.awsS3Service.getDemoObjectContent();
-  }
-  @Get('demo-download')
-  async downloadDemoObject(): Promise<StreamableFile> {
-    const file = await this.awsS3Service.getDemoObjectStream();
-
-    return new StreamableFile(file.body, {
-      type: file.contentType,
-      disposition: 'attachment; filename="test-cloudfront.txt"',
-      ...(file.contentLength !== undefined
-        ? { length: file.contentLength }
-        : {}),
-    });
-  }
-  @Get('demo-download-url')
-  getDemoDownloadUrl() {
-    return this.awsS3Service.getDemoDownloadUrl();
-  }
-  @Post('demo-upload-url')
-  createDemoUploadUrl() {
-    return this.awsS3Service.createDemoUploadUrl();
-  }
   @Post('direct-upload')
   @UseInterceptors(
     FileInterceptor('file', {
@@ -91,8 +53,17 @@ export class AwsS3Controller {
 
     return this.awsS3Service.uploadFileDirectly(file);
   }
-  @Post('demo-upload-post')
+  @Post('create-upload-url')
   createDemoPresignedPost(@Body('contentType') contentType: string) {
     return this.awsS3Service.createDemoPresignedPost(contentType);
+  }
+
+  @Get('version')
+  getVersion() {
+    return {
+      service: 'aws-sdk-s3-lab',
+      version: '2.0.0',
+      message: 'Running version 2',
+    };
   }
 }
