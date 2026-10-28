@@ -1,0 +1,24 @@
+# No arrastrar artefactos locales al contexto de build (acelera y evita node_modules locales)
+**/node_modules
+**/.next
+**/dist
+**/.turbo
+.git
+.github
+
+# env files (se inyectan por build-arg / runtime), salvo plantillas
+**/.env
+**/.env.*
+!**/.env.example
+
+# terraform
+infra/terraform/.terraform
+**/*.tfstate
+**/*.tfstate.*
+**/.terraform.lock.hcl
+
+# misc
+**/coverage
+**/*.log
+**/.DS_Store
+*.tsbuildinfo
