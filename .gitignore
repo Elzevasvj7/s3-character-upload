@@ -57,3 +57,33 @@ pids
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Terraform
+**/.terraform/
+
+# Terraform state files
+*.tfstate
+*.tfstate.*
+*.tfplan
+
+# Terraform variable files
+*.tfvars
+*.tfvars.json
+
+# Allow example variable files
+!*.tfvars.example
+!*.auto.tfvars.example
+
+# Terraform crash logs
+crash.log
+crash.*.log
+
+# Terraform override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Terraform CLI configuration
+.terraformrc
+terraform.rc

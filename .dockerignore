@@ -22,3 +22,6 @@ infra/terraform/.terraform
 **/*.log
 **/.DS_Store
 *.tsbuildinfo
+
+# Infrastructure is not required to build the application image
+infra/
