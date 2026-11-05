@@ -1,0 +1,52 @@
+
+{
+  "family": "aws-sdk-s3-lab",
+  "taskRoleArn": "arn:aws:iam::489323024051:role/aws-sdk-s3-lab-task-role",
+  "executionRoleArn": "arn:aws:iam::489323024051:role/aws-sdk-s3-lab-execution-role",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "256",
+  "memory": "512",
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  },
+  "containerDefinitions": [
+    {
+      "name": "aws-sdk-s3-lab",
+      "image": "IMAGE_URI",
+      "essential": true,
+      "cpu": 0,
+      "portMappings": [
+        {
+          "containerPort": 3000,
+          "hostPort": 3000,
+          "protocol": "tcp",
+          "name": "aws-sdk-s3-lab-3000-tcp",
+          "appProtocol": "http"
+        }
+      ],
+      "environment": [
+        {
+          "name": "S3_BUCKET",
+          "value": "my-lab-bucket-nando"
+        },
+        {
+          "name": "AWS_REGION",
+          "value": "us-east-2"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/aws-sdk-s3-lab",
+          "awslogs-create-group": "true",
+          "awslogs-region": "us-east-2",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ]
+}
