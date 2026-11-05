@@ -63,7 +63,7 @@ export class AwsS3Controller {
     return {
       service: 'aws-sdk-s3-lab',
       version: '2.0.0',
-      message: 'Running version 2',
+      message: 'AWS S3 integration working',
     };
   }
 }
