@@ -43,12 +43,32 @@ data "aws_iam_policy_document" "ecs_tasks_trust" {
     }
   }
 }
+# Política inline para permitir que el Execution Role lea el secreto de SSM
+resource "aws_iam_role_policy" "execution_ssm" {
+  name = "ECSAccessToSSMAppSecretPolicy"
+  role = aws_iam_role.execution.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "AllowReadAppSecrets"
+        Effect = "Allow"
+        Action = [
+          "ssm:GetParameters"
+        ]
+        Resource = "arn:aws:ssm:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:parameter/sdk-s3-lab/nando-secret"
+      }
+    ]
+  })
+}
 
 # Rol utilizado por ECS para descargar la imagen y enviar logs.
 resource "aws_iam_role" "execution" {
   name               = "${local.app_name}-execution-role"
   assume_role_policy = data.aws_iam_policy_document.ecs_tasks_trust.json
   description        = "Permite a ECS descargar la imagen de ECR y enviar logs a CloudWatch."
+
   tags = {
     Project = "aws-sdk-s3-lab"
   }
@@ -275,6 +295,11 @@ resource "aws_ecs_task_definition" "api" {
           value = data.aws_region.current.region
         }
       ]
+      secrets = [
+        {
+          name      = "JWT_SECRET"
+          valueFrom = "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter/sdk-s3-lab/nando-secret"
+      }]
 
       environmentFiles = []
       mountPoints      = []

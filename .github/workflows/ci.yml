@@ -77,6 +77,16 @@ jobs:
           platforms: linux/amd64
           tags: ${{ steps.login-ecr.outputs.registry }}/${{ vars.ECR_REPOSITORY }}:${{ github.sha }}
 
+      - name: Scan Docker image with Trivy
+        uses: aquasecurity/trivy-action@0.29.0
+        with:
+          image-ref: ${{ steps.login-ecr.outputs.registry }}/${{ vars.ECR_REPOSITORY }}:${{ github.sha }}
+          format: 'table'
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+          ignore-unfixed: true
+          exit-code: '0'
+          
       - name: Render ECS task definition
         id: render-task-definition
         uses: aws-actions/amazon-ecs-render-task-definition@v1
