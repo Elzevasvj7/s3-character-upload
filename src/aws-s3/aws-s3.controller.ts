@@ -62,7 +62,6 @@ export class AwsS3Controller {
   getVersion() {
     return {
       service: 'aws-sdk-s3-lab',
-      version: '2.0.0',
       message: 'Direct push deployment to AWS ECS',
     };
   }
