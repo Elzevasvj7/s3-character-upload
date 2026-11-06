@@ -1,12 +1,9 @@
-
 {
   "family": "aws-sdk-s3-lab",
   "taskRoleArn": "arn:aws:iam::489323024051:role/aws-sdk-s3-lab-task-role",
   "executionRoleArn": "arn:aws:iam::489323024051:role/aws-sdk-s3-lab-execution-role",
   "networkMode": "awsvpc",
-  "requiresCompatibilities": [
-    "FARGATE"
-  ],
+  "requiresCompatibilities": ["FARGATE"],
   "cpu": "256",
   "memory": "512",
   "runtimePlatform": {
@@ -36,6 +33,12 @@
         {
           "name": "AWS_REGION",
           "value": "us-east-2"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "JWT_SECRET",
+          "valueFrom": "arn:aws:ssm:us-east-2:489323024051:parameter/sdk-s3-lab/nando-secret"
         }
       ],
       "logConfiguration": {
