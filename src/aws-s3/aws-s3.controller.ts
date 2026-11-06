@@ -65,4 +65,15 @@ export class AwsS3Controller {
       message: 'Direct push deployment to AWS ECS',
     };
   }
+
+  @Get('ssm-test')
+  ssmTest() {
+    const jwtSecret = process.env.JWT_SECRET;
+    return {
+      service: 'aws-sdk-s3-lab',
+      message: 'Testing SSM Parameter Store integration',
+      jwtSecretConfigured: Boolean(jwtSecret),
+      jwtSecretLength: jwtSecret ? jwtSecret.length : 0,
+    };
+  }
 }
